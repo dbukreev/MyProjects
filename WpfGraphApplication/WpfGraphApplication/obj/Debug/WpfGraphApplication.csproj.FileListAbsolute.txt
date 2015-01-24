@@ -1,0 +1,2 @@
+c:\users\bars\documents\visual studio 2012\Projects\WpfGraphApplication\WpfGraphApplication\bin\Debug\WpfGraphApplication.exe.config
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\bin\Debug\WpfGraphApplication.exe.config
