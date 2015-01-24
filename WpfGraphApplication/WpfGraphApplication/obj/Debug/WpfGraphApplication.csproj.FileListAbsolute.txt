@@ -1,2 +1,14 @@
 c:\users\bars\documents\visual studio 2012\Projects\WpfGraphApplication\WpfGraphApplication\bin\Debug\WpfGraphApplication.exe.config
 C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\bin\Debug\WpfGraphApplication.exe.config
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\obj\Debug\WpfGraphApplication.exe
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\obj\Debug\WpfGraphApplication.pdb
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\bin\Debug\WpfGraphApplication.exe
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\bin\Debug\WpfGraphApplication.pdb
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\obj\Debug\WpfGraphApplication.csprojResolveAssemblyReference.cache
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\obj\Debug\MainWindow.baml
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\obj\Debug\MainWindow.g.cs
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\obj\Debug\App.g.cs
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\obj\Debug\WpfGraphApplication_MarkupCompile.cache
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\obj\Debug\WpfGraphApplication.g.resources
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\obj\Debug\WpfGraphApplication.Properties.Resources.resources
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\obj\Debug\WpfGraphApplication.csproj.GenerateResource.Cache
