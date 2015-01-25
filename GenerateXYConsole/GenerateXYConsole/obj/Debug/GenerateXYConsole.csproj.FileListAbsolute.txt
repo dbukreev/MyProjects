@@ -1,0 +1,6 @@
+c:\users\bars\documents\visual studio 2012\Projects\GenerateXYConsole\GenerateXYConsole\bin\Debug\GenerateXYConsole.exe.config
+c:\users\bars\documents\visual studio 2012\Projects\GenerateXYConsole\GenerateXYConsole\bin\Debug\GenerateXYConsole.exe
+c:\users\bars\documents\visual studio 2012\Projects\GenerateXYConsole\GenerateXYConsole\bin\Debug\GenerateXYConsole.pdb
+c:\users\bars\documents\visual studio 2012\Projects\GenerateXYConsole\GenerateXYConsole\obj\Debug\GenerateXYConsole.csprojResolveAssemblyReference.cache
+c:\users\bars\documents\visual studio 2012\Projects\GenerateXYConsole\GenerateXYConsole\obj\Debug\GenerateXYConsole.exe
+c:\users\bars\documents\visual studio 2012\Projects\GenerateXYConsole\GenerateXYConsole\obj\Debug\GenerateXYConsole.pdb
