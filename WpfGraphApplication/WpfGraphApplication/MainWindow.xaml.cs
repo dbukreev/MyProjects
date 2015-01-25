@@ -1,22 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.Serialization.Formatters;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 
@@ -45,7 +34,6 @@ namespace WpfGraphApplication
 		private double _yMin;
 		private double _yMax;
 		private List<List<Point>> _graphList;
-		//ScaleTransform st = new ScaleTransform();
 
 		private void MyCanvas_MouseMove(object sender, MouseEventArgs e)
 		{
@@ -86,14 +74,14 @@ namespace WpfGraphApplication
 				MyCanvas.Children.Add(myLineVertical);
 				MyCanvas.Children.Add(myLineHorizontal);
 			}
-			TextBlockStatus.Text = "Очищено";
+			TextBlockStatus.Text = "Полотно очищено";
 		}
 
 		private void AddTextToCanvasX(string text, double x, double y)
 		{
 			var textBlock = new TextBlock();
 			textBlock.Text = text;
-			textBlock.Foreground = System.Windows.Media.Brushes.White;
+			textBlock.Foreground = System.Windows.Media.Brushes.Black;
 			Canvas.SetLeft(textBlock, x);
 			Canvas.SetBottom(textBlock, y);
 			MyCanvasX.Children.Add(textBlock);
@@ -103,7 +91,7 @@ namespace WpfGraphApplication
 		{
 			var textBlock = new TextBlock();
 			textBlock.Text = text;
-			textBlock.Foreground = System.Windows.Media.Brushes.White;
+			textBlock.Foreground = System.Windows.Media.Brushes.Black;
 			Canvas.SetLeft(textBlock, x);
 			Canvas.SetBottom(textBlock, y);
 			MyCanvasY.Children.Add(textBlock);
@@ -136,7 +124,7 @@ namespace WpfGraphApplication
 				}
 				file.Close();
 				_graphList.Add(pointList);
-				MyListBox.Items.Add(new States { Code = counter + currentCountInList, Name = string.Format("График {0}", counter + currentCountInList) });
+				MyListBox.Items.Add(new GraphicInfo { Code = counter + currentCountInList, Name = string.Format("График {0}", counter + currentCountInList) });
 				counter++;
 			}
 			TextBlockStatus.Text = string.Format("Загружено графиков: {0}", counter - 1);
@@ -193,6 +181,14 @@ namespace WpfGraphApplication
 				double localXMin = graph.Min(_ => _.X);
 				double localYMax = graph.Max(_ => _.Y);
 				double localYMin = graph.Min(_ => _.Y);
+
+				double addLenX = (localXMax - localXMin)/4;
+				double addLenY = (localYMax - localYMin)/4;
+				localXMax += addLenX;
+				localXMin -= addLenX;
+				localYMax += addLenY;
+				localYMin -= addLenY;
+
 				_xMax = localXMax > _xMax ? localXMax : _xMax;
 				_xMin = localXMin < _xMin ? localXMin : _xMin;
 				_yMax = localYMax > _yMax ? localYMax : _yMax;
@@ -244,9 +240,16 @@ namespace WpfGraphApplication
 			//	st.ScaleY /= ScaleRate;
 			//}
 		}
+
+		private void DeleteButton_Click(object sender, RoutedEventArgs e)
+		{
+			_graphList.Clear();
+			MyListBox.Items.Clear();
+			TextBlockStatus.Text = "Все файлы графиков удалены";
+		}
 	}
 
-	public class States
+	public class GraphicInfo
 	{
 		public int Code { get; set; }
 

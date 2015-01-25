@@ -96,6 +96,17 @@
   <ItemGroup>
     <Folder Include="Graphics\" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Add.ico" />
+    <Resource Include="Resources\Delete.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Clear.ico" />
+    <Resource Include="Resources\Draw.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
