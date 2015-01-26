@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using WpfGraphApplication.Extensions;
 
 namespace WpfGraphApplication
 {
@@ -81,7 +82,7 @@ namespace WpfGraphApplication
 		{
 			var textBlock = new TextBlock();
 			textBlock.Text = text;
-			textBlock.Foreground = System.Windows.Media.Brushes.Black;
+			textBlock.Foreground = System.Windows.Media.Brushes.White;
 			Canvas.SetLeft(textBlock, x);
 			Canvas.SetBottom(textBlock, y);
 			MyCanvasX.Children.Add(textBlock);
@@ -91,7 +92,7 @@ namespace WpfGraphApplication
 		{
 			var textBlock = new TextBlock();
 			textBlock.Text = text;
-			textBlock.Foreground = System.Windows.Media.Brushes.Black;
+			textBlock.Foreground = System.Windows.Media.Brushes.White;
 			Canvas.SetLeft(textBlock, x);
 			Canvas.SetBottom(textBlock, y);
 			MyCanvasY.Children.Add(textBlock);
@@ -124,10 +125,10 @@ namespace WpfGraphApplication
 				}
 				file.Close();
 				_graphList.Add(pointList);
-				MyListBox.Items.Add(new GraphicInfo { Code = counter + currentCountInList, Name = string.Format("График {0}", counter + currentCountInList) });
+				MyListBox.Items.Add(new GraphicInfo { Code = counter + currentCountInList, Name = string.Format("F{0}(x)", counter + currentCountInList) });
 				counter++;
 			}
-			TextBlockStatus.Text = string.Format("Загружено графиков: {0}", counter - 1);
+			TextBlockStatus.Text = string.Format("Загружено функций: {0}", counter - 1);
 		}
 
 		private void DrawButton_Click(object sender, RoutedEventArgs e)
@@ -246,6 +247,113 @@ namespace WpfGraphApplication
 			_graphList.Clear();
 			MyListBox.Items.Clear();
 			TextBlockStatus.Text = "Все файлы графиков удалены";
+		}
+
+		private void RevertButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (_graphList.Any())
+			{
+				if (MyListBox.SelectedItems != null && MyListBox.SelectedItems.Count != 0)
+				{
+					ClearButton_Click(null, null);
+					var selectedGraphs = MyListBox.SelectedItems;
+					var numGraph = (from object graph in selectedGraphs
+									select Int32.Parse(graph.ToString())
+										into k
+										select k - 1).ToList();
+					numGraph = RevertGraph(numGraph);
+					GetMaxAndMin(numGraph);
+					DrawGraph(numGraph);
+				}
+				else
+				{
+					MessageBox.Show("Выберите график!", "", MessageBoxButton.OK, MessageBoxImage.Information);
+				}
+			}
+			else
+			{
+				if (MessageBox.Show("Список графиков пуст!\nДобавить из файла?", "", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+				{
+					AddButton_Click(null, null);
+				}
+			}
+		}
+
+		private List<int> RevertGraph(IEnumerable<int> numGraph)
+		{
+			var revertNumberList = new List<int>();
+			int currentCountInList = _graphList.Count;
+			foreach (var number in numGraph)
+			{
+				currentCountInList++;
+				var newPointsList = _graphList[number].Select(_ => new Point(_.X,-_.Y));
+				_graphList.Add(newPointsList.ToList());
+				revertNumberList.Add(currentCountInList - 1);
+				MyListBox.Items.Add(new GraphicInfo { Code =  currentCountInList, Name = string.Format("-F{0}(x)", number + 1) });
+			}
+			return revertNumberList;
+		}
+
+		private void UnionButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (_graphList.Any())
+			{
+				if (MyListBox.SelectedItems != null && MyListBox.SelectedItems.Count != 0)
+				{
+					ClearButton_Click(null, null);
+					var selectedGraphs = MyListBox.SelectedItems;
+					var numGraph = (from object graph in selectedGraphs
+									select Int32.Parse(graph.ToString())
+										into k
+										select k - 1).ToList();
+					numGraph = UnionGraph(numGraph);
+					GetMaxAndMin(numGraph);
+					DrawGraph(numGraph);
+				}
+				else
+				{
+					MessageBox.Show("Выберите график!", "", MessageBoxButton.OK, MessageBoxImage.Information);
+				}
+			}
+			else
+			{
+				if (MessageBox.Show("Список графиков пуст!\nДобавить из файла?", "", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+				{
+					AddButton_Click(null, null);
+				}
+			}
+		}
+
+		private List<int> UnionGraph(IEnumerable<int> numGraph)
+		{
+			var unionNumberList = new List<int>();
+			int currentCountInList = _graphList.Count;
+			var unionGraph = new List<Point>();
+			foreach (var number in numGraph)
+			{
+				var newPointsList = _graphList[number];
+				foreach (var point in newPointsList)
+				{
+					var findResult = unionGraph.Find(_ => _.X.IsEqual(point.X));
+					if (findResult != default(Point))
+					{
+						unionGraph.Remove(findResult);
+						findResult.X = (findResult.X + point.X)/2.0;
+						findResult.Y = (findResult.Y + point.Y)/2.0;
+						unionGraph.Add(findResult);
+					}
+					else
+					{
+						unionGraph.Add(point);
+					}
+				}
+			}
+			currentCountInList++;
+			unionGraph = unionGraph.OrderBy(_ => _.X).ToList();
+			_graphList.Add(unionGraph);
+			MyListBox.Items.Add(new GraphicInfo { Code = currentCountInList, Name = string.Format("Union(Fi(x))") });
+			unionNumberList.Add(currentCountInList - 1);
+			return unionNumberList;
 		}
 	}
 

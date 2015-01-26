@@ -8,7 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/clear.ico")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/draw.ico")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/union.png")]
 
 

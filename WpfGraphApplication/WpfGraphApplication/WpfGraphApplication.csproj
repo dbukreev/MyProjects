@@ -61,6 +61,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Extensions\DoubleEqual.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -106,6 +107,12 @@
   <ItemGroup>
     <Resource Include="Resources\Clear.ico" />
     <Resource Include="Resources\Draw.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Log.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Union.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
