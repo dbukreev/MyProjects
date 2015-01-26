@@ -5,7 +5,7 @@ namespace GenerateXYConsole
 {
 	public class Generator
 	{
-		public Generator(double LeftBoundary = -10.0, double RightBoundary = 10.0, double Step = 0.1)
+		public Generator(double LeftBoundary = -10, double RightBoundary = 10, double Step = 0.1)
 		{
 			_leftBoundary = LeftBoundary;
 			_rightBoundary = RightBoundary;
@@ -23,7 +23,7 @@ namespace GenerateXYConsole
 
 		private double Function(double x)
 		{
-			return Math.Sqrt(x);
+			return Math.Cos(x);
 		}
 
 		public void Generate()

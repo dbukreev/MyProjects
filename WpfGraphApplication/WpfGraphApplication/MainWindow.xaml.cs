@@ -26,8 +26,11 @@ namespace WpfGraphApplication
 
 		private void MyInizializeComponent()
 		{
-			ClearButton_Click(null, null);
 			_graphList = new List<List<Point>>();
+			_numberCurrentsGraphs = new List<int>();
+			_colorsList = new Color[20];
+			_zoom = 1.01;
+			ClearCanvas();
 		}
 
 		private double _xMin;
@@ -35,6 +38,96 @@ namespace WpfGraphApplication
 		private double _yMin;
 		private double _yMax;
 		private List<List<Point>> _graphList;
+		private Color [] _colorsList; 
+		private List<int> _numberCurrentsGraphs;
+		private double _zoom;
+
+		private void AddButton_Click(object sender, RoutedEventArgs e)
+		{
+			var dialog = new OpenFileDialog
+			{
+				DefaultExt = ".txt",
+				Filter = "Файлы txt (*.txt)|*.txt",
+				Multiselect = true
+			};
+			bool? result = dialog.ShowDialog();
+			if (result != true)
+				return;
+
+			int counter = 1;
+			int currentCountInList = _graphList.Count;
+			foreach (var fileName in dialog.FileNames)
+			{
+				var pointList = new List<Point>();
+				var file = new StreamReader(fileName);
+				string line;
+				while ((line = file.ReadLine()) != null)
+				{
+					double x = double.Parse(line.Split()[0].Replace(".", ","));
+					double y = double.Parse(line.Split()[1].Replace(".", ","));
+					pointList.Add(new Point(x, y));
+				}
+				file.Close();
+				_graphList.Add(pointList);
+				MyListBox.Items.Add(new GraphicInfo { Code = counter + currentCountInList, Name = string.Format("F{0}(x)", counter + currentCountInList) });
+				counter++;
+			}
+			TextBlockStatus.Text = string.Format("Загружено функций: {0}", counter - 1);
+		}
+
+		private void DeleteButton_Click(object sender, RoutedEventArgs e)
+		{
+			_graphList.Clear();
+			MyListBox.Items.Clear();
+			TextBlockStatus.Text = "Все файлы графиков удалены";
+		}
+
+		private void DrawButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (_graphList.Any())
+			{
+				if (MyListBox.SelectedItems != null && MyListBox.SelectedItems.Count != 0)
+				{
+					var funchNumbers = GetNumbersSelectedFunctions();
+					ClearCanvas();
+					GetMaxAndMin(funchNumbers);
+					DrawXY();
+					var rnd = new Random();
+					foreach (var number in funchNumbers)
+					{
+						var graphPoints = _graphList[number];
+						Color color = Color.FromRgb((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+						_colorsList[number] = color;
+						DrawFunction(graphPoints, color);
+					}
+
+					_numberCurrentsGraphs.Clear();
+					_numberCurrentsGraphs = funchNumbers.ToList();
+				}
+				else
+				{
+					MessageBox.Show("Выберите график!", "", MessageBoxButton.OK, MessageBoxImage.Information);
+				}
+			}
+			else
+			{
+				if (MessageBox.Show("Список графиков пуст!\nДобавить из файла?", "", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+				{
+					AddButton_Click(null, null);
+				}
+			}
+
+		}
+
+		private void ClearButton_Click(object sender, RoutedEventArgs e)
+		{
+			_xMin = 0;
+			_yMin = 0;
+			_xMax = 0;
+			_yMax = 0;
+			_numberCurrentsGraphs.Clear();
+			ClearCanvas();
+		}
 
 		private void MyCanvas_MouseMove(object sender, MouseEventArgs e)
 		{
@@ -44,38 +137,38 @@ namespace WpfGraphApplication
 			TextBlockPoint.Text = string.Format("X: {0}\tY: {1}", Math.Round(xPosition, 4), Math.Round(yPosition, 4));
 		}
 
-		private void ClearButton_Click(object sender, RoutedEventArgs e)
+		private void MyCanvas_MouseWheel(object sender, MouseWheelEventArgs e)
 		{
-			_xMin = 0;
-			_yMin = 0;
-			_xMax = 10;
-			_yMax = 10;
-			MyCanvas.Children.Clear();
-			MyCanvasX.Children.Clear();
-			MyCanvasY.Children.Clear();
-			for (int i = 0; i <= 10; i++)
-			{
-				var myLineVertical = new Line
-				{
-					X1 = 50*i,
-					X2 = 50*i,
-					Y1 = 0,
-					Y2 = MyCanvas.Height,
-					Stroke = System.Windows.Media.Brushes.Gray
-				};
+			if (!_numberCurrentsGraphs.Any())
+				return;
+			ClearCanvas();
 
-				var myLineHorizontal = new Line
-				{
-					X1 = 0,
-					X2 = MyCanvas.Width,
-					Y1 = 50 * i,
-					Y2 = 50 * i,
-					Stroke = System.Windows.Media.Brushes.Gray
-				};
-				MyCanvas.Children.Add(myLineVertical);
-				MyCanvas.Children.Add(myLineHorizontal);
+			double lenX = _xMax - _xMin;
+			double lenY = _yMax - _yMin;
+			double deltaX = 0;
+			double deltaY = 0;
+			if (e.Delta > 0)
+			{
+				deltaX = -(lenX - lenX / _zoom) / 2.0;
+				deltaY = -(lenY - lenY / _zoom) / 2.0;
 			}
-			TextBlockStatus.Text = "Полотно очищено";
+
+			if (e.Delta < 0)
+			{
+				deltaX = (lenX * _zoom - lenX) / 2.0;
+				deltaY = (lenY * _zoom - lenY) / 2.0;
+			}
+
+			_xMin = _xMin - deltaX;
+			_xMax = _xMax + deltaX;
+			_yMin = _yMin - deltaY;
+			_yMax = _yMax + deltaY;
+
+			foreach (var numbers in _numberCurrentsGraphs)
+			{
+				DrawFunction(_graphList[numbers], _colorsList[numbers]);
+			}
+			DrawXY();
 		}
 
 		private void AddTextToCanvasX(string text, double x, double y)
@@ -98,74 +191,34 @@ namespace WpfGraphApplication
 			MyCanvasY.Children.Add(textBlock);
 		}
 
-		private void AddButton_Click(object sender, RoutedEventArgs e)
+		private void ClearCanvas()
 		{
-			var dialog = new OpenFileDialog
+			MyCanvas.Children.Clear();
+			MyCanvasX.Children.Clear();
+			MyCanvasY.Children.Clear();
+			for (int i = 0; i <= 10; i++)
 			{
-				DefaultExt = ".txt",
-				Filter = "Файлы txt (*.txt)|*.txt",
-				Multiselect = true
-			};
-			bool? result = dialog.ShowDialog();
-			if (result != true)
-				return;
-	
-			int counter = 1;
-			int currentCountInList = _graphList.Count;
-			foreach (var fileName in dialog.FileNames)
-			{
-				var pointList = new List<Point>();
-				var file = new StreamReader(fileName);
-				string line;
-				while ((line = file.ReadLine()) != null)
+				var myLineVertical = new Line
 				{
-					double x = double.Parse(line.Split()[0].Replace(".",","));
-					double y = double.Parse(line.Split()[1].Replace(".", ","));
-					pointList.Add(new Point(x, y));
-				}
-				file.Close();
-				_graphList.Add(pointList);
-				MyListBox.Items.Add(new GraphicInfo { Code = counter + currentCountInList, Name = string.Format("F{0}(x)", counter + currentCountInList) });
-				counter++;
-			}
-			TextBlockStatus.Text = string.Format("Загружено функций: {0}", counter - 1);
-		}
+					X1 = 50 * i,
+					X2 = 50 * i,
+					Y1 = 0,
+					Y2 = MyCanvas.Height,
+					Stroke = System.Windows.Media.Brushes.Gray
+				};
 
-		private void DrawButton_Click(object sender, RoutedEventArgs e)
-		{
-			if (_graphList.Any())
-			{
-				if (MyListBox.SelectedItems != null && MyListBox.SelectedItems.Count != 0)
+				var myLineHorizontal = new Line
 				{
-					ClearButton_Click(null, null);
-					var selectedGraphs = MyListBox.SelectedItems;
-					var numGraph = (from object graph in selectedGraphs
-									select Int32.Parse(graph.ToString())
-										into k
-										select k - 1).ToList();
-					GetMaxAndMin(numGraph);
-					DrawGraph(numGraph);
-				}
-				else
-				{
-					MessageBox.Show("Выберите график!", "", MessageBoxButton.OK, MessageBoxImage.Information);
-				}
+					X1 = 0,
+					X2 = MyCanvas.Width,
+					Y1 = 50 * i,
+					Y2 = 50 * i,
+					Stroke = System.Windows.Media.Brushes.Gray
+				};
+				MyCanvas.Children.Add(myLineVertical);
+				MyCanvas.Children.Add(myLineHorizontal);
 			}
-			else
-			{
-				if (MessageBox.Show("Список графиков пуст!\nДобавить из файла?", "", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-				{
-					AddButton_Click(null, null);
-				}
-			}
-				
-		}
-
-		private Point GetNewCoordinates(Point point)
-		{
-			double x = MyCanvas.Width*(point.X - _xMin)/(_xMax - _xMin);
-			double y = MyCanvas.Height*(1 -(point.Y - _yMin)/(_yMax - _yMin));
-			return new Point(x, y);
+			TextBlockStatus.Text = "Полотно очищено";
 		}
 
 		private void GetMaxAndMin(IEnumerable<int> numGraph)
@@ -197,56 +250,29 @@ namespace WpfGraphApplication
 			}
 		}
 
-		private void DrawGraph(IEnumerable<int> numGraph)
+		private void DrawXY()
 		{
-			var rnd = new Random();
-			foreach (var number in numGraph)
-			{
-				var graphPoints = _graphList[number];
-				var line = new Polyline();
-				foreach (var point in graphPoints)
-				{
-					line.Points.Add(GetNewCoordinates(point));
-				}
-				Color color = Color.FromRgb((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
-				line.Stroke = new SolidColorBrush(color);
-				line.StrokeThickness = 3;
-				MyCanvas.Children.Add(line);
-			}
-
-			double hx = (_xMax - _xMin)/10.0;
-			double hy = (_yMax - _yMin)/10.0;
+			double hx = (_xMax - _xMin) / 10.0;
+			double hy = (_yMax - _yMin) / 10.0;
 			for (int i = 0; i < 10; i++)
 			{
-				AddTextToCanvasX(string.Format("{0}", Math.Round(_xMin + i * hx, 2)), i*50, 5);
-				AddTextToCanvasY(string.Format("{0}", Math.Round(_yMin + i * hy, 2)), 5, i*50 + 20);
+				AddTextToCanvasX(string.Format("{0}", Math.Round(_xMin + i * hx, 2)), i * 50, 5);
+				AddTextToCanvasY(string.Format("{0}", Math.Round(_yMin + i * hy, 2)), 5, i * 50 + 20);
 			}
-
-			TextBlockStatus.Text = "График построен";
 		}
 
-		private void MyCanvas_MouseWheel(object sender, MouseWheelEventArgs e)
+		private void DrawFunction(IEnumerable<Point> pointsList, Color color)
 		{
-			//const double ScaleRate = 2;
-			//Canvas c = sender as Canvas;
-			//c.RenderTransform = st;
-			//if (e.Delta > 0)
-			//{
-			//	st.ScaleX *= ScaleRate;
-			//	st.ScaleY *= ScaleRate;
-			//}
-			//else
-			//{
-			//	st.ScaleX /= ScaleRate;
-			//	st.ScaleY /= ScaleRate;
-			//}
-		}
-
-		private void DeleteButton_Click(object sender, RoutedEventArgs e)
-		{
-			_graphList.Clear();
-			MyListBox.Items.Clear();
-			TextBlockStatus.Text = "Все файлы графиков удалены";
+			var line = new Polyline();
+			foreach (var point in pointsList)
+			{
+				Point p = GetNewCoordinates(point);
+				line.Points.Add(p);
+			}
+	
+			line.Stroke = new SolidColorBrush(color);
+			line.StrokeThickness = 3;
+			MyCanvas.Children.Add(line);
 		}
 
 		private void RevertButton_Click(object sender, RoutedEventArgs e)
@@ -255,15 +281,22 @@ namespace WpfGraphApplication
 			{
 				if (MyListBox.SelectedItems != null && MyListBox.SelectedItems.Count != 0)
 				{
-					ClearButton_Click(null, null);
-					var selectedGraphs = MyListBox.SelectedItems;
-					var numGraph = (from object graph in selectedGraphs
-									select Int32.Parse(graph.ToString())
-										into k
-										select k - 1).ToList();
-					numGraph = RevertGraph(numGraph);
-					GetMaxAndMin(numGraph);
-					DrawGraph(numGraph);
+					var funchNumbers = GetNumbersSelectedFunctions();
+					funchNumbers = RevertGraph(funchNumbers);
+					ClearCanvas();
+					GetMaxAndMin(funchNumbers);
+					DrawXY();
+					var rnd = new Random();
+					foreach (var number in funchNumbers)
+					{
+						var graphPoints = _graphList[number];
+						Color color = Color.FromRgb((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+						_colorsList[number] = color;
+						DrawFunction(graphPoints, color);
+					}
+
+					_numberCurrentsGraphs.Clear();
+					_numberCurrentsGraphs = funchNumbers.ToList();
 				}
 				else
 				{
@@ -279,7 +312,7 @@ namespace WpfGraphApplication
 			}
 		}
 
-		private List<int> RevertGraph(IEnumerable<int> numGraph)
+		private IEnumerable<int> RevertGraph(IEnumerable<int> numGraph)
 		{
 			var revertNumberList = new List<int>();
 			int currentCountInList = _graphList.Count;
@@ -300,15 +333,21 @@ namespace WpfGraphApplication
 			{
 				if (MyListBox.SelectedItems != null && MyListBox.SelectedItems.Count != 0)
 				{
-					ClearButton_Click(null, null);
-					var selectedGraphs = MyListBox.SelectedItems;
-					var numGraph = (from object graph in selectedGraphs
-									select Int32.Parse(graph.ToString())
-										into k
-										select k - 1).ToList();
-					numGraph = UnionGraph(numGraph);
-					GetMaxAndMin(numGraph);
-					DrawGraph(numGraph);
+					var funchNumbers = GetNumbersSelectedFunctions();
+					funchNumbers = UnionGraph(funchNumbers);
+					ClearCanvas();
+					GetMaxAndMin(funchNumbers);
+					DrawXY();
+					var rnd = new Random();
+					foreach (var number in funchNumbers)
+					{
+						var graphPoints = _graphList[number];
+						Color color = Color.FromRgb((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+						_colorsList[number] = color;
+						DrawFunction(graphPoints, color);
+					}
+					_numberCurrentsGraphs.Clear();
+					_numberCurrentsGraphs = funchNumbers.ToList();
 				}
 				else
 				{
@@ -324,7 +363,7 @@ namespace WpfGraphApplication
 			}
 		}
 
-		private List<int> UnionGraph(IEnumerable<int> numGraph)
+		private IEnumerable<int> UnionGraph(IEnumerable<int> numGraph)
 		{
 			var unionNumberList = new List<int>();
 			int currentCountInList = _graphList.Count;
@@ -355,6 +394,23 @@ namespace WpfGraphApplication
 			unionNumberList.Add(currentCountInList - 1);
 			return unionNumberList;
 		}
+
+		private IEnumerable<int> GetNumbersSelectedFunctions()
+		{
+			return 
+				from object funch in MyListBox.SelectedItems
+				select Int32.Parse(funch.ToString())
+				into k
+				select k - 1;
+		}
+
+		private Point GetNewCoordinates(Point point)
+		{
+			double x = MyCanvas.Width * (point.X - _xMin) / (_xMax - _xMin);
+			double y = MyCanvas.Height * (1 - (point.Y - _yMin) / (_yMax - _yMin));
+			return new Point(x, y);
+		}
+
 	}
 
 	public class GraphicInfo

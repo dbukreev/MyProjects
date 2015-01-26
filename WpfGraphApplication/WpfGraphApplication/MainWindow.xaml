@@ -5,7 +5,7 @@
 	<Grid Name="MyGrid" Background="#FFEAE7E7">
 		<Canvas Name="MyCanvasY" HorizontalAlignment="Left" Height="526" Margin="120,0,0,0" VerticalAlignment="Top" Width="41" Background="#FF0B933D"/>
 		<Canvas Name="MyCanvasX" HorizontalAlignment="Left" Height="25" Margin="161,501,0,0" VerticalAlignment="Top" Width="509" Background="#FF0B933D"/>
-		<Canvas Name="MyCanvas" HorizontalAlignment="Right" Height="500" VerticalAlignment="Top" Width="500" Background="White" MouseMove="MyCanvas_MouseMove" MouseWheel="MyCanvas_MouseWheel"/>
+		<Canvas Name="MyCanvas" HorizontalAlignment="Right" Height="500" VerticalAlignment="Top" Width="500" Background="White" MouseMove="MyCanvas_MouseMove" MouseWheel="MyCanvas_MouseWheel" ClipToBounds ="True"/>
 		<StatusBar Name="MyStatusBar"  HorizontalAlignment="Left" Height="25" VerticalAlignment="Bottom" Width="670" Background="#FF2EA3C5" Margin="0,0,0,-4">
 			<StatusBarItem Width="396">
 				<TextBlock Name="TextBlockStatus" Text="Статус" Foreground="White"></TextBlock>
