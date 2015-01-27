@@ -29,7 +29,7 @@ namespace WpfGraphApplication
 			_graphList = new List<List<Point>>();
 			_numberCurrentsGraphs = new List<int>();
 			_colorsList = new Color[20];
-			_zoom = 1.01;
+			_zoom = 1.02;
 			ClearCanvas();
 		}
 
@@ -89,34 +89,69 @@ namespace WpfGraphApplication
 				if (MyListBox.SelectedItems != null && MyListBox.SelectedItems.Count != 0)
 				{
 					var funchNumbers = GetNumbersSelectedFunctions();
-					ClearCanvas();
-					GetMaxAndMin(funchNumbers);
-					DrawXY();
-					var rnd = new Random();
-					foreach (var number in funchNumbers)
-					{
-						var graphPoints = _graphList[number];
-						Color color = Color.FromRgb((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
-						_colorsList[number] = color;
-						DrawFunction(graphPoints, color);
-					}
-
-					_numberCurrentsGraphs.Clear();
-					_numberCurrentsGraphs = funchNumbers.ToList();
+					DrawFunctionRange(funchNumbers);
 				}
 				else
 				{
-					MessageBox.Show("Выберите график!", "", MessageBoxButton.OK, MessageBoxImage.Information);
+					MessageBox.Show("Выберите фукцию!", "", MessageBoxButton.OK, MessageBoxImage.Information);
 				}
 			}
 			else
 			{
-				if (MessageBox.Show("Список графиков пуст!\nДобавить из файла?", "", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+				if (MessageBox.Show("Список функций пуст!\nДобавить из файла?", "", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
 				{
 					AddButton_Click(null, null);
 				}
 			}
 
+		}
+
+		private void RevertButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (_graphList.Any())
+			{
+				if (MyListBox.SelectedItems != null && MyListBox.SelectedItems.Count != 0)
+				{
+					var funchNumbers = GetNumbersSelectedFunctions();
+					funchNumbers = RevertGraph(funchNumbers);
+					DrawFunctionRange(funchNumbers);
+				}
+				else
+				{
+					MessageBox.Show("Выберите функцию!", "", MessageBoxButton.OK, MessageBoxImage.Information);
+				}
+			}
+			else
+			{
+				if (MessageBox.Show("Список функций пуст!\nДобавить из файла?", "", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+				{
+					AddButton_Click(null, null);
+				}
+			}
+		}
+
+		private void UnionButton_Click(object sender, RoutedEventArgs e)
+		{
+			if (_graphList.Any())
+			{
+				if (MyListBox.SelectedItems != null && MyListBox.SelectedItems.Count != 0)
+				{
+					var funchNumbers = GetNumbersSelectedFunctions();
+					funchNumbers = UnionGraph(funchNumbers);
+					DrawFunctionRange(funchNumbers);
+				}
+				else
+				{
+					MessageBox.Show("Выберите функцию!", "", MessageBoxButton.OK, MessageBoxImage.Information);
+				}
+			}
+			else
+			{
+				if (MessageBox.Show("Список функций пуст!\nДобавить из файла?", "", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+				{
+					AddButton_Click(null, null);
+				}
+			}
 		}
 
 		private void ClearButton_Click(object sender, RoutedEventArgs e)
@@ -221,7 +256,7 @@ namespace WpfGraphApplication
 			TextBlockStatus.Text = "Полотно очищено";
 		}
 
-		private void GetMaxAndMin(IEnumerable<int> numGraph)
+		private void GetBounds(IEnumerable<int> numGraph)
 		{
 			_xMax = double.MinValue;
 			_xMin = double.MaxValue;
@@ -275,41 +310,22 @@ namespace WpfGraphApplication
 			MyCanvas.Children.Add(line);
 		}
 
-		private void RevertButton_Click(object sender, RoutedEventArgs e)
+		private void DrawFunctionRange(IEnumerable<int> funchNumbers)
 		{
-			if (_graphList.Any())
+			ClearCanvas();
+			GetBounds(funchNumbers);
+			DrawXY();
+			var rnd = new Random();
+			foreach (var number in funchNumbers)
 			{
-				if (MyListBox.SelectedItems != null && MyListBox.SelectedItems.Count != 0)
-				{
-					var funchNumbers = GetNumbersSelectedFunctions();
-					funchNumbers = RevertGraph(funchNumbers);
-					ClearCanvas();
-					GetMaxAndMin(funchNumbers);
-					DrawXY();
-					var rnd = new Random();
-					foreach (var number in funchNumbers)
-					{
-						var graphPoints = _graphList[number];
-						Color color = Color.FromRgb((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
-						_colorsList[number] = color;
-						DrawFunction(graphPoints, color);
-					}
+				var graphPoints = _graphList[number];
+				Color color = Color.FromRgb((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
+				_colorsList[number] = color;
+				DrawFunction(graphPoints, color);
+			}
 
-					_numberCurrentsGraphs.Clear();
-					_numberCurrentsGraphs = funchNumbers.ToList();
-				}
-				else
-				{
-					MessageBox.Show("Выберите график!", "", MessageBoxButton.OK, MessageBoxImage.Information);
-				}
-			}
-			else
-			{
-				if (MessageBox.Show("Список графиков пуст!\nДобавить из файла?", "", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-				{
-					AddButton_Click(null, null);
-				}
-			}
+			_numberCurrentsGraphs.Clear();
+			_numberCurrentsGraphs = funchNumbers.ToList();
 		}
 
 		private IEnumerable<int> RevertGraph(IEnumerable<int> numGraph)
@@ -327,59 +343,24 @@ namespace WpfGraphApplication
 			return revertNumberList;
 		}
 
-		private void UnionButton_Click(object sender, RoutedEventArgs e)
-		{
-			if (_graphList.Any())
-			{
-				if (MyListBox.SelectedItems != null && MyListBox.SelectedItems.Count != 0)
-				{
-					var funchNumbers = GetNumbersSelectedFunctions();
-					funchNumbers = UnionGraph(funchNumbers);
-					ClearCanvas();
-					GetMaxAndMin(funchNumbers);
-					DrawXY();
-					var rnd = new Random();
-					foreach (var number in funchNumbers)
-					{
-						var graphPoints = _graphList[number];
-						Color color = Color.FromRgb((byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255), (byte)rnd.Next(0, 255));
-						_colorsList[number] = color;
-						DrawFunction(graphPoints, color);
-					}
-					_numberCurrentsGraphs.Clear();
-					_numberCurrentsGraphs = funchNumbers.ToList();
-				}
-				else
-				{
-					MessageBox.Show("Выберите график!", "", MessageBoxButton.OK, MessageBoxImage.Information);
-				}
-			}
-			else
-			{
-				if (MessageBox.Show("Список графиков пуст!\nДобавить из файла?", "", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-				{
-					AddButton_Click(null, null);
-				}
-			}
-		}
-
 		private IEnumerable<int> UnionGraph(IEnumerable<int> numGraph)
 		{
 			var unionNumberList = new List<int>();
 			int currentCountInList = _graphList.Count;
-			var unionGraph = new List<Point>();
+			var unionGraph = new List<Point?>();
 			foreach (var number in numGraph)
 			{
 				var newPointsList = _graphList[number];
 				foreach (var point in newPointsList)
 				{
-					var findResult = unionGraph.Find(_ => _.X.IsEqual(point.X));
-					if (findResult != default(Point))
+					var findResult = unionGraph.Find(_ => _.Value.X.IsEqual(point.X));
+					if (findResult != null)
 					{
 						unionGraph.Remove(findResult);
-						findResult.X = (findResult.X + point.X)/2.0;
-						findResult.Y = (findResult.Y + point.Y)/2.0;
-						unionGraph.Add(findResult);
+						Point tmPoint = findResult.GetValueOrDefault();
+						tmPoint.X = (tmPoint.X + point.X) / 2.0;
+						tmPoint.Y = (tmPoint.Y + point.Y) / 2.0;
+						unionGraph.Add(tmPoint);
 					}
 					else
 					{
@@ -388,8 +369,8 @@ namespace WpfGraphApplication
 				}
 			}
 			currentCountInList++;
-			unionGraph = unionGraph.OrderBy(_ => _.X).ToList();
-			_graphList.Add(unionGraph);
+			unionGraph = unionGraph.OrderBy(_ => _.Value.X).ToList();
+			_graphList.Add(unionGraph.ConvertAll(_=>_.Value));
 			MyListBox.Items.Add(new GraphicInfo { Code = currentCountInList, Name = string.Format("Union(Fi(x))") });
 			unionNumberList.Add(currentCountInList - 1);
 			return unionNumberList;
