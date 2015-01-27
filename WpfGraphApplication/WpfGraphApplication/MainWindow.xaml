@@ -3,8 +3,8 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		Title="Draw Graph Application" Height="586" MaxHeight="586" MinHeight="586" Width="678" MaxWidth="678" MinWidth="678" Icon="Resources/Icon.ico" >
 	<Grid Name="MyGrid" Background="#FFEAE7E7">
-		<Canvas Name="MyCanvasY" HorizontalAlignment="Left" Height="526" Margin="120,0,0,0" VerticalAlignment="Top" Width="41" Background="#FF0B933D"/>
-		<Canvas Name="MyCanvasX" HorizontalAlignment="Left" Height="25" Margin="161,501,0,0" VerticalAlignment="Top" Width="509" Background="#FF0B933D"/>
+		<Canvas Name="MyCanvasY" HorizontalAlignment="Left" Height="526" Margin="120,0,0,0" VerticalAlignment="Top" Width="41" Background="#3CB371"/>
+		<Canvas Name="MyCanvasX" HorizontalAlignment="Left" Height="25" Margin="161,501,0,0" VerticalAlignment="Top" Width="509" Background="#3CB371"/>
 		<Canvas Name="MyCanvas" HorizontalAlignment="Right" Height="500" VerticalAlignment="Top" Width="500" Background="White" MouseMove="MyCanvas_MouseMove" MouseWheel="MyCanvas_MouseWheel" ClipToBounds ="True"/>
 		<StatusBar Name="MyStatusBar"  HorizontalAlignment="Left" Height="25" VerticalAlignment="Bottom" Width="670" Background="#FF2EA3C5" Margin="0,0,0,-4">
 			<StatusBarItem Width="396">

@@ -64,6 +64,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -84,7 +85,7 @@
     <Content Include="Resources\Delete.ico" />
     <Content Include="Resources\Draw.ico" />
     <Content Include="Resources\Icon.ico" />
-    <Content Include="Resources\Log.png" />
+    <Content Include="Resources\Revert.png" />
     <Content Include="Resources\Union.png" />
   </ItemGroup>
   <ItemGroup>
