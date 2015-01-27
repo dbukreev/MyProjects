@@ -1,4 +1,6 @@
-﻿namespace WinFormsGraphApplication
+﻿
+
+namespace WinFormsGraphApplication
 {
 	partial class Form1
 	{
@@ -28,6 +30,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
 			this.MyCanvas = new System.Windows.Forms.Panel();
 			this.MyStatusBar = new System.Windows.Forms.StatusStrip();
@@ -35,14 +38,20 @@
 			this.TextBlockPoint = new System.Windows.Forms.ToolStripStatusLabel();
 			this.MyCanvasY = new System.Windows.Forms.Panel();
 			this.panel1 = new System.Windows.Forms.Panel();
-			this.panel2 = new System.Windows.Forms.Panel();
+			this.MyCanvasX = new System.Windows.Forms.Panel();
 			this.DrawButton = new System.Windows.Forms.Button();
 			this.ClearButton = new System.Windows.Forms.Button();
 			this.DeleteButton = new System.Windows.Forms.Button();
 			this.AddButton = new System.Windows.Forms.Button();
 			this.MyListBox = new System.Windows.Forms.ListBox();
-			this.button1 = new System.Windows.Forms.Button();
-			this.button2 = new System.Windows.Forms.Button();
+			this.UnionButton = new System.Windows.Forms.Button();
+			this.RevertButton = new System.Windows.Forms.Button();
+			this.AddButtonToolTip = new System.Windows.Forms.ToolTip(this.components);
+			this.DrawButtonToolTip = new System.Windows.Forms.ToolTip(this.components);
+			this.ClearButtonToolTip = new System.Windows.Forms.ToolTip(this.components);
+			this.DeleteButtonToolTip = new System.Windows.Forms.ToolTip(this.components);
+			this.ReverButtonToolTip = new System.Windows.Forms.ToolTip(this.components);
+			this.UnionButtonToolTip = new System.Windows.Forms.ToolTip(this.components);
 			this.MyStatusBar.SuspendLayout();
 			this.MyCanvasY.SuspendLayout();
 			this.SuspendLayout();
@@ -55,6 +64,8 @@
 			this.MyCanvas.Name = "MyCanvas";
 			this.MyCanvas.Size = new System.Drawing.Size(500, 500);
 			this.MyCanvas.TabIndex = 0;
+			this.MyCanvas.Paint += new System.Windows.Forms.PaintEventHandler(this.MyCanvas_Paint);
+			this.MyCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MyCanvas_MouseMove);
 			// 
 			// MyStatusBar
 			// 
@@ -91,6 +102,7 @@
 			this.MyCanvasY.Name = "MyCanvasY";
 			this.MyCanvasY.Size = new System.Drawing.Size(41, 525);
 			this.MyCanvasY.TabIndex = 2;
+			this.MyCanvasY.Paint += new System.Windows.Forms.PaintEventHandler(this.MyCanvasY_Paint);
 			// 
 			// panel1
 			// 
@@ -99,13 +111,14 @@
 			this.panel1.Size = new System.Drawing.Size(477, 23);
 			this.panel1.TabIndex = 3;
 			// 
-			// panel2
+			// MyCanvasX
 			// 
-			this.panel2.BackColor = System.Drawing.Color.MediumSeaGreen;
-			this.panel2.Location = new System.Drawing.Point(159, 499);
-			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(503, 26);
-			this.panel2.TabIndex = 3;
+			this.MyCanvasX.BackColor = System.Drawing.Color.MediumSeaGreen;
+			this.MyCanvasX.Location = new System.Drawing.Point(159, 499);
+			this.MyCanvasX.Name = "MyCanvasX";
+			this.MyCanvasX.Size = new System.Drawing.Size(503, 26);
+			this.MyCanvasX.TabIndex = 3;
+			this.MyCanvasX.Paint += new System.Windows.Forms.PaintEventHandler(this.MyCanvasX_Paint);
 			// 
 			// DrawButton
 			// 
@@ -115,7 +128,9 @@
 			this.DrawButton.Size = new System.Drawing.Size(40, 35);
 			this.DrawButton.TabIndex = 0;
 			this.DrawButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.DrawButtonToolTip.SetToolTip(this.DrawButton, "Построить выбранные функции");
 			this.DrawButton.UseVisualStyleBackColor = true;
+			this.DrawButton.Click += new System.EventHandler(this.DrawButton_Click);
 			// 
 			// ClearButton
 			// 
@@ -125,6 +140,7 @@
 			this.ClearButton.Size = new System.Drawing.Size(40, 35);
 			this.ClearButton.TabIndex = 4;
 			this.ClearButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.ClearButtonToolTip.SetToolTip(this.ClearButton, "Очистить полотно");
 			this.ClearButton.UseVisualStyleBackColor = true;
 			// 
 			// DeleteButton
@@ -135,6 +151,7 @@
 			this.DeleteButton.Size = new System.Drawing.Size(40, 35);
 			this.DeleteButton.TabIndex = 6;
 			this.DeleteButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.DeleteButtonToolTip.SetToolTip(this.DeleteButton, "Удалить все загруженные файлы");
 			this.DeleteButton.UseVisualStyleBackColor = true;
 			// 
 			// AddButton
@@ -145,51 +162,56 @@
 			this.AddButton.Size = new System.Drawing.Size(40, 35);
 			this.AddButton.TabIndex = 5;
 			this.AddButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.AddButtonToolTip.SetToolTip(this.AddButton, "Добавить файлы точечных функций");
 			this.AddButton.UseVisualStyleBackColor = true;
+			this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
 			// 
 			// MyListBox
 			// 
 			this.MyListBox.FormattingEnabled = true;
 			this.MyListBox.Location = new System.Drawing.Point(11, 115);
 			this.MyListBox.Name = "MyListBox";
+			this.MyListBox.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
 			this.MyListBox.Size = new System.Drawing.Size(90, 95);
 			this.MyListBox.TabIndex = 0;
 			// 
-			// button1
+			// UnionButton
 			// 
-			this.button1.Image = global::WinFormsGraphApplication.Properties.Resources.Union;
-			this.button1.Location = new System.Drawing.Point(62, 242);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(40, 35);
-			this.button1.TabIndex = 8;
-			this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.button1.UseVisualStyleBackColor = true;
+			this.UnionButton.Image = global::WinFormsGraphApplication.Properties.Resources.Union;
+			this.UnionButton.Location = new System.Drawing.Point(62, 242);
+			this.UnionButton.Name = "UnionButton";
+			this.UnionButton.Size = new System.Drawing.Size(40, 35);
+			this.UnionButton.TabIndex = 8;
+			this.UnionButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.UnionButtonToolTip.SetToolTip(this.UnionButton, "Объединить выбранные точечные функции, для одинаковых аргументов усреднить");
+			this.UnionButton.UseVisualStyleBackColor = true;
 			// 
-			// button2
+			// RevertButton
 			// 
-			this.button2.BackColor = System.Drawing.SystemColors.ActiveBorder;
-			this.button2.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.button2.Image = global::WinFormsGraphApplication.Properties.Resources.Revert;
-			this.button2.Location = new System.Drawing.Point(12, 242);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(39, 35);
-			this.button2.TabIndex = 7;
-			this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			this.button2.UseVisualStyleBackColor = false;
+			this.RevertButton.BackColor = System.Drawing.SystemColors.ActiveBorder;
+			this.RevertButton.ForeColor = System.Drawing.SystemColors.ControlText;
+			this.RevertButton.Image = global::WinFormsGraphApplication.Properties.Resources.Revert;
+			this.RevertButton.Location = new System.Drawing.Point(12, 242);
+			this.RevertButton.Name = "RevertButton";
+			this.RevertButton.Size = new System.Drawing.Size(39, 35);
+			this.RevertButton.TabIndex = 7;
+			this.RevertButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.ReverButtonToolTip.SetToolTip(this.RevertButton, "Построить симетрию по Y для выбранных функций");
+			this.RevertButton.UseVisualStyleBackColor = false;
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(662, 547);
-			this.Controls.Add(this.button1);
-			this.Controls.Add(this.button2);
+			this.Controls.Add(this.UnionButton);
+			this.Controls.Add(this.RevertButton);
 			this.Controls.Add(this.MyListBox);
 			this.Controls.Add(this.DeleteButton);
 			this.Controls.Add(this.AddButton);
 			this.Controls.Add(this.ClearButton);
 			this.Controls.Add(this.DrawButton);
-			this.Controls.Add(this.panel2);
+			this.Controls.Add(this.MyCanvasX);
 			this.Controls.Add(this.MyCanvasY);
 			this.Controls.Add(this.MyStatusBar);
 			this.Controls.Add(this.MyCanvas);
@@ -215,14 +237,20 @@
 		private System.Windows.Forms.ToolStripStatusLabel TextBlockPoint;
 		private System.Windows.Forms.Panel MyCanvasY;
 		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Panel panel2;
+		private System.Windows.Forms.Panel MyCanvasX;
 		private System.Windows.Forms.Button DrawButton;
 		private System.Windows.Forms.Button ClearButton;
 		private System.Windows.Forms.Button DeleteButton;
 		private System.Windows.Forms.Button AddButton;
 		private System.Windows.Forms.ListBox MyListBox;
-		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.Button UnionButton;
+		private System.Windows.Forms.Button RevertButton;
+		private System.Windows.Forms.ToolTip AddButtonToolTip;
+		private System.Windows.Forms.ToolTip DrawButtonToolTip;
+		private System.Windows.Forms.ToolTip ClearButtonToolTip;
+		private System.Windows.Forms.ToolTip DeleteButtonToolTip;
+		private System.Windows.Forms.ToolTip ReverButtonToolTip;
+		private System.Windows.Forms.ToolTip UnionButtonToolTip;
 	}
 }
 

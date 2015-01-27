@@ -7,3 +7,4 @@ C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplicati
 C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplication\obj\Debug\WinFormsGraphApplication.csproj.GenerateResource.Cache
 C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplication\obj\Debug\WinFormsGraphApplication.exe
 C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplication\obj\Debug\WinFormsGraphApplication.pdb
+C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplication\obj\Debug\WinFormsGraphApplication.csprojResolveAssemblyReference.cache
