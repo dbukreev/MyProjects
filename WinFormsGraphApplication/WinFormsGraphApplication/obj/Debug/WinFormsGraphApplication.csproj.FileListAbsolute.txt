@@ -1,1 +1,10 @@
 c:\users\bars\documents\visual studio 2012\Projects\WinFormsGraphApplication\WinFormsGraphApplication\bin\Debug\WinFormsGraphApplication.exe.config
+C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplication\bin\Debug\WinFormsGraphApplication.exe.config
+C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplication\bin\Debug\WinFormsGraphApplication.exe
+C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplication\bin\Debug\WinFormsGraphApplication.pdb
+C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplication\obj\Debug\WinFormsGraphApplication.csprojResolveAssemblyReference.cache
+C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplication\obj\Debug\WinFormsGraphApplication.Form1.resources
+C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplication\obj\Debug\WinFormsGraphApplication.Properties.Resources.resources
+C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplication\obj\Debug\WinFormsGraphApplication.csproj.GenerateResource.Cache
+C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplication\obj\Debug\WinFormsGraphApplication.exe
+C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplication\obj\Debug\WinFormsGraphApplication.pdb

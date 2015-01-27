@@ -29,7 +29,7 @@ namespace WpfGraphApplication
 			_graphList = new List<List<Point>>();
 			_numberCurrentsGraphs = new List<int>();
 			_colorsList = new Color[20];
-			_zoom = 1.02;
+			_zoom = 1.1;
 			ClearCanvas();
 		}
 
@@ -176,34 +176,59 @@ namespace WpfGraphApplication
 		{
 			if (!_numberCurrentsGraphs.Any())
 				return;
+			Point mousePoint = Mouse.GetPosition(MyCanvas);
 			ClearCanvas();
 
 			double lenX = _xMax - _xMin;
 			double lenY = _yMax - _yMin;
-			double deltaX = 0;
-			double deltaY = 0;
+			double deltaXMin = 0;
+			double deltaXMax = 0;
+			double deltaYMin = 0;
+			double deltaYMax = 0;
+
 			if (e.Delta > 0)
 			{
-				deltaX = -(lenX - lenX / _zoom) / 2.0;
-				deltaY = -(lenY - lenY / _zoom) / 2.0;
+				deltaXMin = -(lenX - lenX / _zoom) *(mousePoint.X/MyCanvas.Width);
+				deltaXMax = -(lenX - lenX / _zoom) * (1 - mousePoint.X / MyCanvas.Width); ;
+				deltaYMin = -(lenY - lenY / _zoom) * ((MyCanvas.Height - mousePoint.Y) / MyCanvas.Height);
+				deltaYMax = -(lenY - lenY / _zoom) * (1 - (MyCanvas.Height - mousePoint.Y) / MyCanvas.Height);
+				TextBlockStatus.Text = string.Format("Увеличено в {0} раза", _zoom);
 			}
 
 			if (e.Delta < 0)
 			{
-				deltaX = (lenX * _zoom - lenX) / 2.0;
-				deltaY = (lenY * _zoom - lenY) / 2.0;
+				deltaXMin = -(lenX - lenX * _zoom) * (mousePoint.X / MyCanvas.Width);
+				deltaXMax = -(lenX - lenX * _zoom) * (1 - mousePoint.X / MyCanvas.Width); ;
+				deltaYMin = -(lenY - lenY * _zoom) * ((MyCanvas.Height - mousePoint.Y) / MyCanvas.Height);
+				deltaYMax = -(lenY - lenY * _zoom) * (1 - (MyCanvas.Height - mousePoint.Y) / MyCanvas.Height);
+				TextBlockStatus.Text = string.Format("Уменьшено в {0} раза", _zoom);
 			}
 
-			_xMin = _xMin - deltaX;
-			_xMax = _xMax + deltaX;
-			_yMin = _yMin - deltaY;
-			_yMax = _yMax + deltaY;
+			double oldXMin = _xMin;
+			double oldXMAx = _xMax;
+			double oldYMin = _yMin;
+			double OldYMax = _yMax;
+
+			_xMin = _xMin - deltaXMin;
+			_xMax = _xMax + deltaXMax;
+			_yMin = _yMin - deltaYMin;
+			_yMax = _yMax + deltaYMax;
+
+			if (Math.Abs(_xMax - _xMin) < 0.01 || Math.Abs(_yMax - _yMin) < 0.01)
+			{
+				_xMin = oldXMin;
+				_xMax = oldXMAx;
+				_yMin = oldYMin;
+				_yMax = OldYMax;
+				TextBlockStatus.Text = "Дальнейший зум невозможен!";
+			}
 
 			foreach (var numbers in _numberCurrentsGraphs)
 			{
 				DrawFunction(_graphList[numbers], _colorsList[numbers]);
 			}
 			DrawXY();
+
 		}
 
 		private void AddTextToCanvasX(string text, double x, double y)
@@ -291,8 +316,8 @@ namespace WpfGraphApplication
 			double hy = (_yMax - _yMin) / 10.0;
 			for (int i = 0; i < 10; i++)
 			{
-				AddTextToCanvasX(string.Format("{0}", Math.Round(_xMin + i * hx, 2)), i * 50, 5);
-				AddTextToCanvasY(string.Format("{0}", Math.Round(_yMin + i * hy, 2)), 5, i * 50 + 20);
+				AddTextToCanvasX(string.Format("{0}", Math.Round(_xMin + i * hx, 3)), i * 50, 5);
+				AddTextToCanvasY(string.Format("{0}", Math.Round(_yMin + i * hy, 3)), 5, i * 50 + 20);
 			}
 		}
 
@@ -326,6 +351,7 @@ namespace WpfGraphApplication
 
 			_numberCurrentsGraphs.Clear();
 			_numberCurrentsGraphs = funchNumbers.ToList();
+			TextBlockStatus.Text = string.Format("Графиков построено: {0}", funchNumbers.Count());
 		}
 
 		private IEnumerable<int> RevertGraph(IEnumerable<int> numGraph)
