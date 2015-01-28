@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -29,7 +30,7 @@ namespace WpfGraphApplication
 			_graphList = new List<List<Point>>();
 			_numberCurrentsGraphs = new List<int>();
 			_colorsList = new Color[20];
-			_zoom = 1.1;
+			_zoom = 1.03;
 			ClearCanvas();
 		}
 
@@ -115,6 +116,11 @@ namespace WpfGraphApplication
 					var funchNumbers = GetNumbersSelectedFunctions();
 					funchNumbers = RevertGraph(funchNumbers);
 					DrawFunctionRange(funchNumbers);
+					MyListBox.SelectedItems.Clear();
+					foreach (var number in funchNumbers)
+					{
+						MyListBox.SelectedItems.Add(MyListBox.Items[number]);
+					}
 				}
 				else
 				{
@@ -139,6 +145,11 @@ namespace WpfGraphApplication
 					var funchNumbers = GetNumbersSelectedFunctions();
 					funchNumbers = UnionGraph(funchNumbers);
 					DrawFunctionRange(funchNumbers);
+					MyListBox.SelectedItems.Clear();
+					foreach (var number in funchNumbers)
+					{
+						MyListBox.SelectedItems.Add(MyListBox.Items[number]);
+					}
 				}
 				else
 				{
@@ -160,6 +171,7 @@ namespace WpfGraphApplication
 			_yMin = 0;
 			_xMax = 0;
 			_yMax = 0;
+			MyListBox.SelectedItems.Clear();
 			_numberCurrentsGraphs.Clear();
 			ClearCanvas();
 		}
@@ -307,6 +319,12 @@ namespace WpfGraphApplication
 				_xMin = localXMin < _xMin ? localXMin : _xMin;
 				_yMax = localYMax > _yMax ? localYMax : _yMax;
 				_yMin = localYMin < _yMin ? localYMin : _yMin;
+			}
+
+			if (Math.Abs(_yMax - _yMin) < 0.0001)
+			{
+				_yMax = (_xMax - _xMin)/2.0;
+				_yMin = -(_xMax - _xMin) / 2.0;
 			}
 		}
 

@@ -1,0 +1,8 @@
+C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplication\bin\Release\WinFormsGraphApplication.exe.config
+C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplication\bin\Release\WinFormsGraphApplication.exe
+C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplication\bin\Release\WinFormsGraphApplication.pdb
+C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplication\obj\Release\WinFormsGraphApplication.Form1.resources
+C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplication\obj\Release\WinFormsGraphApplication.Properties.Resources.resources
+C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplication\obj\Release\WinFormsGraphApplication.csproj.GenerateResource.Cache
+C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplication\obj\Release\WinFormsGraphApplication.exe
+C:\Users\bars\Desktop\MyProjects\WinFormsGraphApplication\WinFormsGraphApplication\obj\Release\WinFormsGraphApplication.pdb

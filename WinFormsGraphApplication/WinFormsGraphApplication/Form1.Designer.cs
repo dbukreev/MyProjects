@@ -65,7 +65,9 @@ namespace WinFormsGraphApplication
 			this.MyCanvas.Size = new System.Drawing.Size(500, 500);
 			this.MyCanvas.TabIndex = 0;
 			this.MyCanvas.Paint += new System.Windows.Forms.PaintEventHandler(this.MyCanvas_Paint);
+			this.MyCanvas.MouseEnter += new System.EventHandler(this.MyCanvas_MouseEnter);
 			this.MyCanvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MyCanvas_MouseMove);
+			this.MyCanvas.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.MyCanvas_MouseWhell);
 			// 
 			// MyStatusBar
 			// 
@@ -122,7 +124,7 @@ namespace WinFormsGraphApplication
 			// 
 			// DrawButton
 			// 
-			this.DrawButton.Image = global::WinFormsGraphApplication.Properties.Resources.Draw;
+			this.DrawButton.Image = ((System.Drawing.Image)(resources.GetObject("DrawButton.Image")));
 			this.DrawButton.Location = new System.Drawing.Point(11, 11);
 			this.DrawButton.Name = "DrawButton";
 			this.DrawButton.Size = new System.Drawing.Size(40, 35);
@@ -134,7 +136,7 @@ namespace WinFormsGraphApplication
 			// 
 			// ClearButton
 			// 
-			this.ClearButton.Image = global::WinFormsGraphApplication.Properties.Resources.Clear;
+			this.ClearButton.Image = ((System.Drawing.Image)(resources.GetObject("ClearButton.Image")));
 			this.ClearButton.Location = new System.Drawing.Point(61, 11);
 			this.ClearButton.Name = "ClearButton";
 			this.ClearButton.Size = new System.Drawing.Size(40, 35);
@@ -142,10 +144,11 @@ namespace WinFormsGraphApplication
 			this.ClearButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.ClearButtonToolTip.SetToolTip(this.ClearButton, "Очистить полотно");
 			this.ClearButton.UseVisualStyleBackColor = true;
+			this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
 			// 
 			// DeleteButton
 			// 
-			this.DeleteButton.Image = global::WinFormsGraphApplication.Properties.Resources.Delete;
+			this.DeleteButton.Image = ((System.Drawing.Image)(resources.GetObject("DeleteButton.Image")));
 			this.DeleteButton.Location = new System.Drawing.Point(62, 62);
 			this.DeleteButton.Name = "DeleteButton";
 			this.DeleteButton.Size = new System.Drawing.Size(40, 35);
@@ -153,10 +156,11 @@ namespace WinFormsGraphApplication
 			this.DeleteButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.DeleteButtonToolTip.SetToolTip(this.DeleteButton, "Удалить все загруженные файлы");
 			this.DeleteButton.UseVisualStyleBackColor = true;
+			this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
 			// 
 			// AddButton
 			// 
-			this.AddButton.Image = global::WinFormsGraphApplication.Properties.Resources.Add;
+			this.AddButton.Image = ((System.Drawing.Image)(resources.GetObject("AddButton.Image")));
 			this.AddButton.Location = new System.Drawing.Point(12, 62);
 			this.AddButton.Name = "AddButton";
 			this.AddButton.Size = new System.Drawing.Size(40, 35);
@@ -177,7 +181,7 @@ namespace WinFormsGraphApplication
 			// 
 			// UnionButton
 			// 
-			this.UnionButton.Image = global::WinFormsGraphApplication.Properties.Resources.Union;
+			this.UnionButton.Image = ((System.Drawing.Image)(resources.GetObject("UnionButton.Image")));
 			this.UnionButton.Location = new System.Drawing.Point(62, 242);
 			this.UnionButton.Name = "UnionButton";
 			this.UnionButton.Size = new System.Drawing.Size(40, 35);
@@ -185,19 +189,21 @@ namespace WinFormsGraphApplication
 			this.UnionButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.UnionButtonToolTip.SetToolTip(this.UnionButton, "Объединить выбранные точечные функции, для одинаковых аргументов усреднить");
 			this.UnionButton.UseVisualStyleBackColor = true;
+			this.UnionButton.Click += new System.EventHandler(this.UnionButton_Click);
 			// 
 			// RevertButton
 			// 
 			this.RevertButton.BackColor = System.Drawing.SystemColors.ActiveBorder;
 			this.RevertButton.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.RevertButton.Image = global::WinFormsGraphApplication.Properties.Resources.Revert;
+			this.RevertButton.Image = ((System.Drawing.Image)(resources.GetObject("RevertButton.Image")));
 			this.RevertButton.Location = new System.Drawing.Point(12, 242);
 			this.RevertButton.Name = "RevertButton";
 			this.RevertButton.Size = new System.Drawing.Size(39, 35);
 			this.RevertButton.TabIndex = 7;
 			this.RevertButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			this.ReverButtonToolTip.SetToolTip(this.RevertButton, "Построить симетрию по Y для выбранных функций");
+			this.ReverButtonToolTip.SetToolTip(this.RevertButton, "Построить симетрию по X для выбранных функций");
 			this.RevertButton.UseVisualStyleBackColor = false;
+			this.RevertButton.Click += new System.EventHandler(this.RevertButton_Click);
 			// 
 			// Form1
 			// 

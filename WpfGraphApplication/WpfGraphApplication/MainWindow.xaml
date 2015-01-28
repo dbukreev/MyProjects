@@ -37,7 +37,7 @@
 				<Image Source="Resources/Draw.ico" Height="25" Width="30" />
 			</StackPanel>
 		</Button>
-		<Button Name="RevertButton" ToolTip="Построить симетрию по Y для выбранных функций" HorizontalAlignment="Left" Margin="16,224,0,0" VerticalAlignment="Top" Width="35" Click="RevertButton_Click">
+		<Button Name="RevertButton" ToolTip="Построить симетрию по X для выбранных функций" HorizontalAlignment="Left" Margin="16,224,0,0" VerticalAlignment="Top" Width="35" Click="RevertButton_Click">
 			<StackPanel>
 				<Image Source="Resources/Log.png" Height="31" Width="35" />
 			</StackPanel>

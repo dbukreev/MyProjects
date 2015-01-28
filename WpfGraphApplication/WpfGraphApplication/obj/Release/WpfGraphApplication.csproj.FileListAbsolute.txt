@@ -1,0 +1,13 @@
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\bin\Release\WpfGraphApplication.exe.config
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\bin\Release\WpfGraphApplication.exe
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\bin\Release\WpfGraphApplication.pdb
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\obj\Release\WpfGraphApplication.csprojResolveAssemblyReference.cache
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\obj\Release\MainWindow.baml
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\obj\Release\MainWindow.g.cs
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\obj\Release\App.g.cs
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\obj\Release\WpfGraphApplication_MarkupCompile.cache
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\obj\Release\WpfGraphApplication.g.resources
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\obj\Release\WpfGraphApplication.Properties.Resources.resources
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\obj\Release\WpfGraphApplication.csproj.GenerateResource.Cache
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\obj\Release\WpfGraphApplication.exe
+C:\Users\bars\Desktop\MyProjects\WpfGraphApplication\WpfGraphApplication\obj\Release\WpfGraphApplication.pdb
